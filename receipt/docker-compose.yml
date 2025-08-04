@@ -1,0 +1,32 @@
+name: docker-tjt-receipt
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: tjt-docker-image
+    container_name: tjt-docker-container
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    # environment:
+    #   - DEBUG=Tr  # Set to False in production
+    #   - ALLOWED_HOSTS=[]
+  db:
+    image: postgres:17
+    container_name: tjt-docker-db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: TJT
+      POSTGRES_DB: tjt
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres_data:
+    
+    

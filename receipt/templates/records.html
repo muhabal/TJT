@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block stylesheet %}
+  <link rel="stylesheet" href="{% static 'css/records.css' %}">
+{% endblock stylesheet %}
+  
+
+{% block main %}
+  <main id="main">
+    <h1>records</h1>
+
+    <div class="pre-table">
+      <div class="date">
+        <input type="date">
+      </div> 
+      <div class="download">
+        <a href="#download-range">
+          <h3>Download Spreadsheet</h3>
+          <span class="material-symbols-outlined">
+            download
+          </span>
+        </a>            
+      </div>
+    </div>
+    <div class="records_list">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Client</th>
+            <th>Order item</th>
+            <th>Quantity</th>
+            <!-- <th>Price (₦)</th> -->
+            <th>Total Cost (₦)</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for orderItem in orderItems %}
+          <tr>
+            <td>{{ orderItem.order.date }}</td>
+            <td>{{ orderItem.order.client.name }}</td>
+            <td>{{ orderItem.product.name }}</td>
+            <td>{{ orderItem.quantity }}</td>
+            <td>{{ orderItem.get_total }}</td>
+            <td>Complete</td>
+          </tr>            
+          {% endfor %}
+        </tbody>
+      </table>
+      <a href="#" id="showAllBtn">Show All</a>
+      <a href="#" id="showLessBtn">Show Less</a>
+    </div>
+
+    <div class="download-range" id="download-range">
+      <div class="close" id="close-btn">
+        <span class="material-symbols-outlined">
+        <a href="#main">close</a></span>
+      </div>
+      <h2>Select date range</h2>
+      <form id="rangeForm" action="records" method="post">
+        {% csrf_token %}
+        <div class="select-date">
+          <div>
+            <h3>Start Date:</h3>
+            <input name="start" type="date">
+          </div>
+          <div>
+            <h3>End Date:</h3>
+            <input name="end" type="date">
+          </div>
+          <input type="hidden" name="pdb" id="pdb">
+          <input type="hidden" name="atr" id="atr">
+          <button type="submit">
+            <span class="material-symbols-outlined">
+            download
+            </span>          
+          </button>
+        </div>
+        <div>
+          <input type="checkbox" id="db"><label for="db" class="text-muted">Include Pre Database records</label>     
+          <input type="checkbox" id="all"><label for="all" class="text-muted">Include all Records</label>    
+        </div>
+      </form>
+    </div>
+  </main> 
+{% endblock main %}
+
+
+{% block right %}
+  <div class="right">
+    <div class="top">
+      <button id="menu-btn">
+        <span class="material-symbols-outlined">
+        menu
+        </span>
+      </button>
+      <div class="theme-toggler">
+        <span class="material-symbols-outlined active">
+        light_mode
+        </span>
+        <span class="material-symbols-outlined">
+        dark_mode
+        </span>
+      </div>
+      <div class="profile">
+        <div class="info">
+          <p>Hey, <b>Daniel</b></p>
+          <small class="text-muted">Admin</small>
+        </div>
+        <div class="profile-photo">
+          <img style="border-radius: 50%;" src="../images/profile-1.jpg" alt="">
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock right %}
+  
+{% block pagejs %}
+  <script src="{% static 'js/records.js' %}"></script>
+{% endblock pagejs %}
+  

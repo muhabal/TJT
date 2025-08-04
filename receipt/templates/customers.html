@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block main %}
+  <main>
+    <h1>Customers</h1>
+
+    <div class="date">
+      <input type="date">
+    </div>
+
+    <div class="customers_list">
+      <table>
+        <thead>
+          <tr>
+            <th>Client Name</th>
+            <th>Client Address</th>
+            <th>Mobile No</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          {% for customer in customers %}
+            <tr id="client-{{ customer.id }}">
+              <td>{{ customer.name }}</td>
+              <td>{{ customer.address }}</td>
+              <td>{{ customer.mobile_no }}</td>
+              <td class="primary detail" data-customer-id="{{ customer.id }}">
+                <span>Details</span>
+                <button>
+                  <span class="material-symbols-outlined">
+                  more_vert
+                  </span>  
+                </button>
+                <div class="detail-options">
+                  <p data-action="edit">Edit</p>
+                  <p data-action="delete">Delete</p>
+                </div>
+              </td>
+
+            </tr>
+          {% endfor %}
+            
+        </tbody>
+      </table>
+    </div>
+    <div class="add-customer">
+      <div>
+        <span class="material-symbols-outlined">
+        add
+        </span>
+        Add Customer
+      </div>
+    </div>
+    <div class="customer_details">
+      <div class="close" id="close-btn">
+        <span class="material-symbols-outlined">
+        close</span>
+      </div>
+      <div class="edit_detail"> 
+        <h2>Edit Detail</h2>
+        <form method="post" action="customers">
+          <div class="edit-inputs">
+            {% csrf_token %}
+            <input name="name" placeholder="Client Name" type="text">
+            <input name="address" placeholder="Address" type="text">
+            <input name="phone" placeholder="Mobile No" type="number">     
+            <input name="id" type="hidden">
+          </div>
+        <input type="submit" name="" id="submit" value="Save Changes">
+        </form>  
+      </div>
+      <div class="delete-detail">
+        <h2>Delete Detail</h2>
+        <h3></h3>
+        <div>
+          <form action="" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="delete" value="delete">
+            <input name="id" type="hidden">
+            <button data-action="yes" type="submit">Yes</button>
+          </form>
+          <button data-action="no">No</button>
+        </div>
+      </div>
+      <div class="add-new-customer">
+        <h2>New Customer</h2>
+        <form method="post" class="" action="">
+          {% csrf_token %}
+          <div class="edit-inputs">
+            <input type="hidden" name="new" value="new">
+            <input name="name" placeholder="Client Name" type="text">
+            <input name="address" placeholder="Address" type="text">
+            <input name="phone" placeholder="Mobile No" type="number">     
+          </div>
+          <input type="submit" name="" id="submit" value="Add">
+        </form>      
+      </div>   
+      {{ clients|json_script:"clients" }}
+    </div>
+  </main> 
+{% endblock main %}
+
+{% block pagejs %}
+  <script src="{% static 'js/customer.js' %}"></script>
+{% endblock pagejs %}
+  
+  
+
+
+  

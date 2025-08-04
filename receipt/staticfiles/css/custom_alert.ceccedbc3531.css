@@ -1,0 +1,60 @@
+.payment-confirm-alert{
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+}
+
+.order-alert{
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.order-alert h2{
+  font-size: 22px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.order-alert p{
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: #666;
+}
+
+.alert-buttons{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.confirmBtn{
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  background-color: #332e2e;
+}
+
+.confirmBtn:hover{
+  background-color: black;
+}
+
+.record{
+  padding-top: 20px;
+}
+
+.record-order:hover{
+  color: white;
+  background-color: black ;
+}

@@ -1,0 +1,302 @@
+.invoice{
+ display: none;
+ flex-direction: column;
+ background-color: #ebe4e4b8;
+ align-items: center;;
+ margin-left: 10px;
+}
+
+.invoice.show{
+  display: flex;
+}
+
+.receipt-block{
+  padding-left: 0;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #2d3743;
+  width: fit-content;
+  background-color: white;
+}
+
+.header-block{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 30px;
+  margin-bottom: 20px;
+  align-items: center;
+  padding-top: 40px;
+}
+
+.client{  
+  justify-content: right;
+}
+
+.client-details{
+  font-size: 14px;
+  font-family: Montserrat alternates, Roboto, Georgia;
+  font-weight: 400;
+}
+
+.trybe-logo{
+ height: 100%;
+ padding-left: 30px;
+}
+
+.logo-block{
+  height: 150px;
+  display: flex;
+  justify-content: left;
+  padding-left: 20px;
+}
+
+.order-details-block{
+  display: flex;
+  flex-direction: row;
+  height: fit-content;
+  margin-top: 30px;
+  padding-bottom: 150px;
+}
+
+.invoice-block{
+  width: 200px;
+  position: relative;
+}
+
+.invoice-sign{
+  background-color: black;
+  padding: 10px 60px 20px 60px;
+  margin-top: 0;
+  margin-right: 60px;
+  position: absolute;
+  top: 20px;
+  right: -40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10px;
+}
+
+.invoice-icon{
+  height: 100%;
+}
+
+.table-heading{
+  background-color: black;
+}
+
+.table-headers{
+  color: white;
+  padding-top: 18px;
+  padding-bottom: 18px;
+  font-size: 12px;
+  font-family: "Nanum Gothic";
+  font-style: normal;
+  font-weight: 700;
+}
+
+.order-details{
+  align-items: center;
+  padding-top: 20px;
+}
+
+.order-table{
+  border-collapse: collapse;
+  font-family: sans-serif;
+  margin-top: 50px;
+}
+
+.mid-header, .mid-content{
+  padding-right: 40px ;
+}
+
+.right-header, .right-content{
+  padding-right: 60px;
+}
+
+.lead-header, .lead-content{
+  padding-right: 20px;
+}
+
+.table-content{
+  padding-top: 10px;
+  font-family: Georgia, Times, 'Times New Roman', serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: darkslategray;
+}
+
+.total-info{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-family: Montserrat alternates;
+  margin-bottom: 10px ;
+  color: darkslategray;
+}
+
+.total-params{
+  padding-right: 10px;
+}
+
+.applied-discount{
+  font-size: 12px;
+  font-weight: 300;
+}
+
+#delivery_fee{
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.cost-value, .discounted-value,.delivery-cost{
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.total-cost-block{
+  display: flex;
+  /* grid-template-columns: 1fr 1fr; */
+  /* column-gap: 15px; */
+  align-items: start;
+  /* margin-top: 40px; */
+  padding-top: 40px;
+  justify-content: space-evenly;
+  padding-left: 16px;
+}
+
+.bank-info{
+  font-family: Montserrat-Alternates, Roboto, sans-serif;
+  font-size: 15px;
+  color: #2d3743;
+  padding-top: 60px;
+}
+
+.markers{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: last baseline;
+  padding-top: 20px;
+  padding-bottom: 40px;
+  padding-left: 10px;
+}
+
+.invoice-date-block{
+  display: flex;
+  flex-direction: row;
+  background-color: #2d3743;
+  color: white;
+  margin-left: 40px;
+  padding-left: 15px;
+  font-family: Roboto;
+  font-size: 12px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+
+.date, .number{
+  font-weight: 300;
+  font-family: "Nanum Gothic"
+}
+
+.invoice-date{
+  padding-left: 30px;
+}
+
+.ceo-signature{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: Montserrat alternates, Roboto;
+  color: #2d3743;
+  line-height: 2px;
+}
+
+.sign{
+  height: 40px;
+}
+
+.sign-icon{
+  height: 100%;
+}
+
+.marker-heading{
+  font-family: Roboto;
+  font-optical-sizing: auto;
+}
+
+.ceo-name{
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.ceo{
+  font-weight: 500;
+  font-size: 12px;
+}
+
+.sign-line{
+  border-color: #2d3743;
+  width: 100px;
+}
+
+.footer{
+  background-color: #2d3743;
+  font-family: Roboto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  font-size: 12px;
+  color: white;
+  font-weight: 300;
+  padding-top: 20px; padding-bottom: 20px;
+}
+
+.contact-call{
+  height: 18px;
+  padding-right: 10px;
+}
+
+.location-sign{
+  height: 24px;
+  padding-right: 10px;
+}
+
+.call-icon, .location-icon{
+  height: 100%;
+}
+
+.contact, .location{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.print-text{
+  font-weight: 600;
+  font-family: Montserrat alternates;
+  color: white;
+  padding-right: 30px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.print-receipt{
+  display: flex;
+  align-items: center;
+  background-image: linear-gradient(180deg, #e1e6ed, rgb(41, 40, 40));
+  width: fit-content;
+  padding: 5px 40px;
+  border-radius: 20px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.print-block{
+  height: 50px;
+}
+
+.print-icon{
+  height: 100%;
+  cursor: pointer;
+}

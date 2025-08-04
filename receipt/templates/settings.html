@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block main %}
+  <main>
+    <h1>Settings</h1>
+    <div class="admin-settings">
+      <div class="settings-tab" data-id="1">
+        <h2>Display</h2>
+        <div>
+          <h3>Set theme</h3>
+          <p data-action="light">light</p>
+          <p data-action="dark">dark</p>
+        </div>
+      </div>
+      <div class="settings-tab" data-id="2">
+        <h2>User Management</h2>
+        <div>
+          <div>
+            <h3>Users</h3>
+            <div class="user-list">
+              {% for user in users %}
+                <div>
+                  <span value="{{ user.username }}">{{ user.username }}</span><a href="#userEVD"><button data-user-id="{{ user.id }}">View Profile</button></a>
+                </div>
+              {% endfor %}           
+            </div>
+          </div>
+          <div>
+            <h3>Groups</h3>
+            <div class="group-list">
+              {% for group in groups %}
+              <div>
+                <span value="{{ group.name }}">{{ group.name }}</span>
+              </div>
+              {% endfor %}
+                
+            </div>
+          </div>
+          {% if request.user.is_superuser %}
+          <div>
+            <a href="#userEVD" id="addUser">
+              <span class="material-symbols-outlined">
+                add
+              </span>
+            <span>Add new user</span> 
+            </a>
+          </div>
+          {% endif %}
+          <!-- <div>
+            <a href="#">
+              <span class="material-symbols-outlined">
+                add
+              </span>
+              <span>Add new group</span>
+            </a>   
+          </div>             -->
+        </div>
+      </div>
+      
+      {% if request.user.is_superuser %}
+      <div class="settings-tab"  data-id="3">
+        <h2>Developer Settings</h2>
+        <div>
+          <a href="/admin">
+            <h3>Go to Django Admin</h3>
+          </a>          
+        </div>
+      </div>        
+      {% endif %}
+    </div>
+    <form method="post" action="/settings">
+      {% csrf_token %}
+      <div class="userEVD" id="userEVD">
+      </div>
+    </form>
+  </main> 
+  {{ request.user.is_superuser|json_script:"superuser" }}
+  {{ users_js|json_script:"users_js" }}
+  {{ groups_js|json_script:"groups_js" }}
+  {{ user_groups|json_script:"user_groups" }}
+{% endblock main %}
+
+{% block pagejs %}
+  <script src="{% static 'js/settings.js' %}"></script>
+{% endblock pagejs %}

@@ -1,0 +1,140 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Receipt</title>
+
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Roboto:ital,wght@0,100..900;1,100..900&family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+<main>
+  <div class="receipt-block" id="my-node">
+    <!--header with logo and customer details-->
+    <div class="header-block">
+      <div class="logo-block">
+        <img class="trybe-logo" src="{% static 'icons/tjt_logo_2.png' %}" alt="">
+      </div>
+      <div class="client">
+        <p class="client-details">To: {{client_details.name }}</p>
+        <p class="client-details">{{ client_details.mobile_no }}</p>
+        {% if order.delivery_method.method == "shipping" %}
+          <p class="client-details">{{ client_details.address }}, {{ client_details.city }}, {{ client_details.state }}</p>          
+        {% endif %}
+      </div>
+    </div>
+
+    <!--order details-->
+    <div class="order-details-block">
+      <div class="invoice-block">
+          <div class="invoice-sign">
+            <img class="invoice-icon" src="{% static 'icons/INVOICE.png' %}" alt="">
+          </div>
+      </div>
+      <div class="order-details">
+        <table class="order-table">
+          <thead class="table-heading">
+            <tr class="header-row">
+              <th class="table-headers lead-header">DESC</th>
+              <th class="table-headers mid-header">QTY</th>
+              <th class="table-headers mid-header">UNIT PRICE</th>
+              <th class="table-headers right-header">TOTAL</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in orderList %}
+            <tr>              
+                <td class="table-content lead-content">{{ item.product.name }}</td>
+                <td class="table-content mid-content">{{ item.quantity }}</td>
+                <td class="table-content mid-content">{{ item.product.price }}</td>
+                <td class="table-content right-content">{{ item.get_total }}</td>                
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!--total cost of order-->
+    <div class="total-cost-block">
+      TOTAL COST:<span class="cost-value">₦{{ order.get_total_with_discount }}</span>
+    </div>
+
+    <!--invoice no, date and sign-->
+    <div class="markers">
+      <div class="invoice-date-block">
+        <div class="invoice-no">
+          <p class="marker-heading">Invoice No:</p>
+          <p class="number">{{ invoice_no }}</p>
+        </div>
+        <div class="invoice-date">
+          <p class="marker-heading">Invoice Date:</p>
+          <p class="date">2 June, 2025</p>
+        </div>
+      </div>
+      <div class="ceo-signature">
+        <div class="sign">
+          <img class="sign-icon" src="{% static 'icons/tjt_sign.png' %}" alt="">
+        </div>
+        <hr class="sign-line">
+        <p class="ceo-name">
+          Huraira Muhammed
+        </p>
+        <p class="ceo">Company CEO</p>
+      </div>
+    </div>
+    
+    <!--receipt footer-->
+    <div class="footer">
+      <div class="contact">
+        <div class="contact-call">
+          <img class="call-icon" src="{% static 'icons/phone-call-icon.png' %}" alt="">
+        </div>
+        <p>+234 915 556 2972</p>
+      </div>
+      <div class="location">
+        <div class="location-sign">
+          <img class="location-icon" src="{% static 'icons/location.png' %}" alt="">
+        </div>
+        <p>Gembu Crescent, Are 11 Garki 2, Abuja.</p>
+      </div>
+    </div>
+  </div>  
+
+  <!--print receipt button-->
+  <div class="print-receipt">
+    <p class="print-text">PRINT RECEIPT</p>
+    <div class="print-block">
+      <img class="print-icon" id="capture" src="{% static 'icons/print-icon_2.png' %}" alt="">
+    </div>
+  </div>  
+</main>
+
+  <!--preview the receipt and download-->
+  <div id="preview-container" class="receipt-preview">
+    <img id="screenshot-preview" src="" alt="">
+    <button class="download-img"> Download image</button>
+  </div>
+  <script>
+    document.getElementById('capture').addEventListener('click', () => {
+      
+      //select the section to screenshot
+      const receipt = document.getElementById('my-node')
+
+      html2canvas(receipt).then(canvas => {
+        // document.getElementById('preview-container').appendChild(canvas);
+        const dataURL = canvas.toDataURL("invoice/png");
+        const link = document.createElement('a')
+        link.href = dataURL
+        link.download = 'invoice.png'
+        link.click()
+      })
+    })    
+  </script>
+</body>
+</html>

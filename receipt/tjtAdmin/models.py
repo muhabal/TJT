@@ -1,0 +1,12 @@
+from django.db import models
+
+# Create your models here.
+class Expenses(models.Model):
+  name = models.CharField(max_length=100, blank=True, null=True)
+  cost = models.IntegerField(blank=True, null=True)
+  unit = models.CharField(max_length=15, null=True, blank=True)
+  quantity = models.IntegerField(null=True, blank=True)
+  date = models.DateField(null=True, blank=True, auto_now_add=True)
+
+  def __str__(self):
+    return f'{self.name} {self.quantity} {self.unit}s'

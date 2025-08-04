@@ -1,0 +1,87 @@
+#form{
+  background-color: #bebcbd;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  top: 0;
+  left: 0;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width:  100%;
+}
+
+#form-holder{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 500px;
+}
+
+#left-form{
+  background-color: black;
+  align-items: center;
+  justify-content: center;
+}
+
+#left-form, #right-form{
+  display: flex;
+  flex-direction: column; 
+}
+
+#right-form{
+  background-color: white;
+  padding: 40px 20px
+}
+
+#signinBtn-div{
+  display: flex;
+}
+
+.signinBtn{
+  width: 100%;
+  padding-top: 16px; padding-bottom: 16px;
+  background-color: black;
+  border-style: none;
+  display: flex;
+  justify-content: center;
+  color: white;
+  font-family: Roboto;
+  border-radius: 5px;
+}
+
+#password,#signinBtn-div{
+  margin-top: 10px;
+}
+
+#password, #name{
+  padding-top: 16px; padding-bottom: 16px;
+  padding-left: 13px;
+  background-color: #ddd;
+  border-style: none;
+  font-family: Montserrate-Alternates, Roboto;
+  border-radius: 5px;
+}
+
+.tjtLogo{
+  height: 150px;
+}
+
+.tjtLogo img{
+  height: 100%;
+}
+
+.social-media{
+  height: 40px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.social-icons{
+  height: 100%;
+}
+
+.mail{
+  height: 25px;
+  padding-left: 5px;
+}

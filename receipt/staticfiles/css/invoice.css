@@ -1,0 +1,379 @@
+html{
+  font-size: 16px;
+}
+
+body{
+  font-family: Montserrat alternates, sans-serif;
+  margin: 0;
+  background-color: rgb(231, 231, 231);  
+}
+
+.invoice-container{
+  display: flex;
+  justify-content: space-evenly;
+  margin-block-end: 1rem;
+  margin-block-start: 1rem;
+}
+
+.order-entry-container, .receipt-container{
+  width: 100%;
+  max-width: 600px;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  transition: all .15s ease-in-out;
+  padding-bottom: .5rem;
+}
+
+.invoice-header{
+  display: grid;
+  grid-template-columns: 1.5fr auto;
+  align-items: self-start;
+}
+
+.order-entry-container{
+  margin-left: .2rem;
+}
+
+.invoice-header p{
+  background-color: black;
+  color: white;
+  font-size: 36px;
+  padding: .5em ;
+  margin-block-start: .8em;
+}
+
+.invoice-header div{
+  height: 10rem;
+}
+
+.logo-container img{
+  max-height: 100%;
+}
+
+.order-entry p, .summary p, .discount-entry p, .order-total p, .delivery
+, .delivery-fee-container p, .delivery-info-container p{
+  font-size: 1.1rem;
+  font-weight: 400;
+  margin-block-start: 0;
+  margin-block-end: .5rem;
+}
+
+.order-entry, .summary, .discount-entry, .order-total, .delivery
+, .delivery-fee, .delivery-info-container, .receipt-button{
+  padding:.5em 1rem;
+}
+
+.delivery-fee{
+  opacity: 0;
+  overflow: hidden;
+  height: 0;
+}
+
+.delivery-fee.show{
+  opacity: 1;
+  height: fit-content;
+}
+
+.delivery-info-container{
+  opacity: 0;
+  overflow: hidden;
+  height: 0;
+  transition: all .15s ease-in-out;
+}
+
+.delivery-info-container.show{
+  opacity: 1;
+  height: auto;
+}
+
+select{
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  font-size: 1rem;
+  padding: .8em 3em .8em .8em;
+  color: white;
+  background: #2c2d31;
+  border: 0;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.order-entries, .delivery-fee-container{
+  display: grid;
+  grid-template-columns: 1fr auto;
+  margin-block-end: 10px;
+  row-gap: 10px;
+}
+
+.delivery-fee-container label{
+  font-size: .8rem;
+} 
+
+.order-entries p{
+  font-size: 1rem;
+  padding-right: .7em;
+}
+
+.custom-select, .discount-custom-select{
+  position: relative;
+}
+
+.custom-select span, .discount-custom-select span{
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #202129;
+  display: block;
+  height: 100%;
+  width: 3rem;  
+  pointer-events: none;
+  border-radius: 0 5px 5px 0;
+}
+
+.discount-custom-select{
+  width: max-content;
+}
+
+.custom-arrow::before,
+.custom-arrow::after{
+
+  --size: .5em;
+
+  content: '';
+  position: absolute;
+  height: 0;
+  width: 0;
+
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.custom-arrow::before{
+  border-left: var(--size) solid transparent;
+  border-right: var(--size) solid transparent;
+  border-bottom: var(--size) solid rgba(255, 255, 255, .5);
+   top: 35%;
+}
+
+.custom-arrow::after{
+  border-left: var(--size) solid transparent;
+  border-right: var(--size) solid transparent;
+  border-top: var(--size) solid rgba(255, 255, 255, .5);
+   top: 60%;
+}
+
+.quantity-input-container{
+  display: flex;
+}
+
+.quantity-input-container input, .delivery-fee-input, .form-control{
+  max-inline-size: 100%;
+  padding: 1em 1.5em;
+  border: none;
+  background-color: #2c2d31;
+  color: white;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.add-button-container{
+  display: flex;
+  justify-content: center;
+}
+
+.add-button-container button{
+  width: 50%;
+  border-radius: 10px;
+  padding: 1em 1.5em;
+  border: none;
+  background-image: linear-gradient(45deg, rgba(214, 213, 213, 0.5), #2c2d31 );
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  color: rgb(34, 38, 48);
+  font-size: .8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .15s ease-in-out;
+}
+
+.add-button-container button:hover, .toggleBtn:hover{
+  background-image: linear-gradient(255deg, darkgray, black);
+  color: white;
+}
+
+.summary-items{
+  display: flex;
+  flex-direction: row;
+  padding: .9rem;
+  background-color: #2c2d31;
+  color: white;
+  justify-content: space-between;
+}
+
+.summary-tab{
+  display: grid;
+  grid-template-columns:1fr;
+  margin-block-start: .3em;
+  padding-right: .3em;
+  align-items: self-start;
+}
+
+.summary-headings{
+  padding-right: .5em;
+  padding-bottom: 5px;
+  font-size: .9rem;
+  text-wrap: nowrap;
+  font-weight: 600;
+}
+
+.item{
+  font-size: .8rem;
+  font-weight: 500;
+  padding-top: .5em;
+}
+
+.total-tab{
+  display: grid;
+  grid-template-columns: 1fr auto;
+  column-gap: 5px;
+  align-items: center;
+}
+
+.trash-icon, .call-icon, .location-icon{
+  height: 1.5rem;
+}
+
+.trash-icon img{ 
+  height: 100%;
+  cursor: pointer;
+}
+
+.order-total{
+  display: flex;
+  justify-content: right;
+}
+
+.order-total p{
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding-left: 1rem;
+}
+
+.delivery p{
+  margin-block-end: .5em;
+  margin-block-start: 0;
+}
+
+.delivery-details{
+  display: grid;
+  grid-template-columns:1fr 1fr;
+  row-gap: .5em;
+  column-gap: .5em;
+}
+
+.form-field{
+  display: flex;
+}
+
+.form-control{
+  width: 100%;
+}
+
+.receipt-button button{
+  width: 100%;
+  padding: 1em;
+  border: none;
+  background-color: #2c2d31;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.receipt-button{
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+  transition: all ease-in;
+  cursor: pointer;
+}
+.receipt-button.show{
+  opacity: 1;
+  height: fit-content;
+}
+
+.toggleBtn{
+  position: fixed;
+  rotate: 90deg;
+  top: 50%;
+  left: -70px;
+  background-color: #2c2d31;
+  color: white;
+  padding: .5em 1em;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: .8rem;
+}
+
+.toggle-tool{
+  display: flex;
+  align-items: center;
+}
+
+.toggle-tool img{
+  height: 1rem;
+  display: inline;  
+}
+
+.quantity-tab{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.quantity-update{
+  display: flex;
+  align-items: center;
+}
+
+.quantity-update p{
+  padding: .2rem .4rem;
+  font-size: 1em;
+  margin-block-end: 0;
+  background-color: white;
+  border-radius: 10px;
+  color: black;
+  font-weight: 600;
+  margin-left: 3px;
+  cursor: pointer;
+}
+
+@media(max-width: 500px){
+  html{
+    font-size: 14px;
+  }
+
+  .order-entry-container{
+    margin-block-end: .8rem;
+  }
+
+  .toggleBtn{
+    display: none;
+  }
+
+  .add-button-container button{
+    pointer-events: none;
+    pointer-events: all;
+  }
+
+  .add-button-container button:active, .toggleBtn:active{
+  background-image: linear-gradient(255deg, darkgray, black);
+  color: white;
+  }
+
+  .invoice-container{
+  display: grid;
+  grid-template-columns: 1fr;
+  }
+}

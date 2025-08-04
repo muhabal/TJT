@@ -1,0 +1,310 @@
+{% load static %}
+{% load receipt_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invoice generator</title>
+  <!--MATERIAL CDN-->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Roboto:ital,wght@0,100..900;1,100..900&family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <link rel="stylesheet" href="{% static 'css/invoice.css' %}">
+  <link rel="stylesheet" href="{% static 'css/receipt.css' %}">
+  <link rel="stylesheet" href="{% static 'css/custom_alert.css' %}">
+</head>
+<body>
+  <div class="home" id="home-btn">
+    {% if admin %}
+    <a href="/">
+      <span class="material-symbols-outlined">
+      home</span>  
+      <h3>Return to TJT Admin</h3>
+    </a>
+    {% endif %}
+    <a href="/logout">
+      <span class="material-symbols-outlined">
+      logout</span>  
+      <h3>Log out</h3>
+    </a>
+  </div>    
+
+  <div class="invoice-container" id="invoice-container-id">
+    <div id="enterOrder" class="order-entry-container">
+      <!--logo block-->
+      <div class="invoice-header">
+        <p>INVOICE</p>
+        <div class="logo-container">
+          <img class="tjt-logo" src="{% static 'icons/tjt_logo_2.png' %}" alt="">
+        </div> 
+      </div>
+
+      <!--receipt entry block-->
+      <div class="order-entry">
+        <p> Order Entry </p>
+        <div class="order-entries">
+          <div class="order-param">
+            <p>Product:</p>
+          </div>
+          <div class="custom-select">
+            <select name="products" id="select-products" class="selected-product custom-select">
+              <option value="0" class="product-option">Select Product</option>
+              {% for product in products %}
+                <option data-product-id="{{ product.id }}" data-unit-price="{{ product.price }}" value="{{ product.name }}" class="product-option">{{ product.name }}</option>
+              {% endfor %}
+            </select>
+            <span class="custom-arrow"></span>
+          </div>
+          <div class="order-param">
+            <p>Quantity:</p>
+          </div>
+          <div class="quantity-input-container">
+            <input name="quantity" type="number" class="quantity-input" placeholder="0">
+          </div>
+        </div>
+
+        <div class="add-button-container">
+          <button onclick="additem()" class="js-add-item">+ Add Item</button>
+        </div>
+      </div>
+
+      <!--receipt summary block-->
+      <div class="summary">
+        <p> Order Summary</p>
+        <div class="summary-items">
+          <div class="summary-tab porder">
+            <div class="summary-headings">S/N</div>
+          </div>
+          <div class="summary-tab pname">
+            <div class="summary-headings">Product</div>
+          </div>
+          <div class="summary-tab pquantity">
+            <div class="summary-headings">#Quantity</div>
+          </div>
+          <div class="summary-tab puprice">
+            <div class="summary-headings">Unit Price (₦)</div>
+          </div>
+          <div class="summary-tab ptotal">
+            <div class="summary-headings">Total</div>
+          </div>
+        </div>
+      </div>
+
+      <!--apply discount block-->
+      <div class="discount-entry">
+        <p>Apply Discount:</p>
+        <div class="discount-custom-select">
+          <select onchange="discountChange()" id="select-discount">
+            <option value ="0" class="discount-option">Select Discount</option>
+            {% for discount in discounts %}
+              <option data-name="{{ discount.name }}" value="{{ discount.percentage }}" class="discount-option">{{ discount.name }} - {{ discount.percentage|percentage:100 }}% off</option>
+            {% endfor %}
+          </select>
+          <span class="custom-arrow"></span>
+        </div>
+      </div>   
+      <!--order total-->
+      <div class="order-total">
+        <p class="order-total-param">Order Total (₦)</p>
+        <p class="order-total-value"></p>
+      </div>
+
+      <!-- delivery method -->
+      <div class="delivery">
+        <p>Choose a delivery method</p>
+        <div class="delivery-options">
+          <div>
+            <input onclick="delivery(this)" name="delivery-method" type="radio" value="pick-up" class="delivery-option-input" id="rad1">
+            <label for="rad1" class="delivery-option">
+              Pick Up
+            </label>
+          </div>
+          <div>
+            <input onclick="delivery(this)" name="delivery-method" type="radio" value="delivery" class="delivery-option-input" id="rad2">
+            <label for="rad2" class="delivery-option">
+              Deliver to address
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!--delivery fee-->
+      <div class="delivery-fee">
+        <div class="delivery-fee-container">
+          <div>
+            <p>Delivery Fee:</p>
+            <input data-state="0" type="checkbox" id="addFee"><label for="addFee">Include delivery fee to order total</label>
+          </div>
+          <div>
+            <input id="delivery-fee-input" name="delivery" type="number" class="delivery-fee-input" placeholder="0">
+          </div>
+        </div>     
+      </div>
+
+
+      <!--delivery details-->
+      <div class="delivery-info-container">
+        <p class="order-shipping">Delivery Information:</p>
+        <hr>
+        <div id="delivery-info" class="delivery-details">
+            <div class="form-field">
+              <input class="form-control" type="text" name="name" placeholder="Client name..">
+            </div>
+            <div class="form-field">
+              <input class="form-control" type="tel" name="phone" placeholder="Client mobile no..">
+            </div>
+            <div class="form-field">
+              <input class="form-control" type="text" name="address" placeholder="Address..">
+            </div>
+            <div class="form-field">
+              <input class="form-control" type="text" name="city" placeholder="City..">
+            </div>
+            <div class="form-field">
+              <input class="form-control" type="text" name="state" placeholder="State..">
+            </div>
+        </div>
+      </div>
+
+      <!--Receipt button-->
+      <div class="receipt-button js-receipt-button">
+        <button onclick="genInvoice(this)" class="gen-receipt">
+          Generate Invoice</button>
+      </div>
+    </div>
+
+    <div class="invoice receipt-container">
+      <div class="receipt-block" id="my-node">
+        <!--header with logo and customer details-->
+        <div class="header-block">
+          <div class="logo-block">
+            <img class="trybe-logo" src="{% static 'icons/tjt_logo_2.png' %}" alt="">
+          </div>
+          <div class="client">
+            <p class="client-details client-name"></p>
+            <p class="client-details mobile-phone"></p>
+            <p class="client-details address"></p>          
+          </div>
+        </div>
+
+        <!--order details-->
+        <div class="order-details-block">
+          <div class="invoice-block">
+              <div class="invoice-sign">
+                <img class="invoice-icon" src="{% static 'icons/INVOICE.png' %}" alt="">
+              </div>
+          </div>
+          <div class="order-details">
+            <table class="order-table">
+              <thead class="table-heading">
+                <tr class="header-row">
+                  <th class="table-headers lead-header"><div class="tab-header">DESC</div></th>
+                  <th class="table-headers mid-header"><div class="tab-header">QTY</div></th>
+                  <th class="table-headers mid-header"><div class="tab-header">PRICE (₦)</div></th>
+                  <th class="table-headers right-header"><div class="tab-header">TOTAL (₦)</div></th>
+                </tr>
+              </thead>
+              <tbody class="invoice-row"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!--total cost of order-->
+        <div class="total-cost-block">
+          <div class="bank-info">
+            <p>Bank: Wema</p>
+            <p>Account Name: Huraira Muhammed</p>
+            <p>Account Number: 0251530864</p>
+          </div>
+          <div class="total-info"><!--flex-->
+            <table>
+              <tbody class="total-tab-invoice">
+              </tbody>
+            </table>
+          </div> 
+        </div>
+
+        <!--invoice no, date and sign-->
+        <div class="markers">
+          <div class="invoice-date-block">
+            <div class="invoice-no">
+              <p class="marker-heading">Invoice No:</p>
+              <p class="number">{{ order_id|invoice_no }}</p>
+            </div>
+            <div class="invoice-date">
+              <p class="marker-heading">Invoice Date:</p>
+              <p class="date">2 June, 2025</p>
+            </div>
+          </div>
+          <div class="ceo-signature">
+            <div class="sign">
+              <img class="sign-icon" src="{% static 'icons/tjt_sign.png' %}" alt="">
+            </div>
+            <hr class="sign-line">
+            <p class="ceo-name">
+              Huraira Muhammed
+            </p>
+            <p class="ceo">Company CEO</p>
+          </div>
+        </div>
+        
+        <!--receipt footer-->
+        <div class="footer">
+          <div class="contact">
+            <div class="contact-call">
+              <img class="call-icon" src="{% static 'icons/phone-call-icon.png' %}" alt="">
+            </div>
+            <p>+234 915 556 2972</p>
+          </div>
+          <div class="location">
+            <div class="location-sign">
+              <img class="location-icon" src="{% static 'icons/location.png' %}" alt="">
+            </div>
+            <p>Gembu Crescent, Area 11 Garki 2, Abuja.</p>
+          </div>
+        </div>
+      </div>  
+
+      <!--print receipt button-->
+      <div class="print-receipt" id="capture">
+        <button class="print-button">PRINT INVOICE</button>
+      </div>
+
+      <!--Record order button-->
+      <div class="record">
+        <button id="record-order" class="record-button">RECORD ORDER</button>
+      </div>
+    </div>
+
+    <!--confirmation alert-->
+    <div id="payment-confirm-alert" class="payment-confirm-alert">
+      <div class="order-alert">
+        <h2>Confirm order creation?</h2>
+        <p>Note: Please ensure payments have been received and order has been sorted before selecting an option!</p>
+        <div class="alert-buttons">
+          <button id="confirm" class="confirmBtn">Yes</button>
+          {% csrf_token %}
+          <button id="deny" class="confirmBtn">No</button>
+        </div>
+      </div>
+    </div>
+
+    <!--toggle order entry-->
+    <div id="toggleBTN" class="toggleBtn">
+      <div class="toggle-tool">
+        <label for="toggleBtn">Toggle Invoice Entry</label><img id="toggleBtn" name="toggleBtn" src="{% static 'icons/toggleBtn.png' %}" alt="">
+      </div>
+    </div>   
+  </div>
+  {{ order_id|json_script:"order_id" }}
+
+  <script src="{% static 'js/index.js' %}"></script>
+  <script src="{% static 'js/toggleBtn.js' %}"></script>
+  <script src="{% static 'js/invoice.js' %}"></script>
+  <script src="{% static 'js/alert.js' %}"></script>
+  <script src="{% static 'js/download_invoice.js' %}"></script>
+  <script src="{% static 'js/record.js' %}" type="text/javascript"></script>
+</body>
+</html>

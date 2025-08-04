@@ -1,0 +1,64 @@
+.payment-confirm-alert, .custom-alert{
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+}
+
+.order-alert, .alert-main{
+  background-color: white;
+  padding: 1.2rem;
+  border-radius: .5rem;
+  width: fit-content;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.message{
+  font-size: 1rem;
+  margin-bottom: .8rem;
+  font-weight: 500;
+}
+
+.order-alert h2{
+  font-size: 1rem;
+  margin-bottom: .8rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.order-alert p{
+  font-size: .8rem;
+  margin-bottom: .9em;
+  color: #666;
+}
+
+.alert-buttons{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.alert-button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.confirmBtn, .closeAlert{
+  padding: .8rem 1.2rem;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  background-color: #111111;
+}
+
+.confirmBtn:hover, .closeAlert:hover{
+  background-color: black;
+}

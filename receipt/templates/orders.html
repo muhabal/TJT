@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load receipt_tags %}
+{% block main %}
+<main>
+  <h1>Orders</h1>
+  <div class="date">
+    <input type="date">
+  </div>
+  <div class="orders_list">
+    <table>
+      <thead>
+        <tr>
+          <th>Order id</th>
+          <th>Discount</th>
+          <th>Date/time</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        {% for order in orders %}
+          <tr id="order-{{ order.id }}">
+            <td>{{order.order_id|invoice_no}}</td>
+            <td>{{order.discount.name}}</td>
+            <td>{{order.date}}</td>
+            <td class="primary detail" data-order-id="{{ order.id }}">
+              <span>Details</span>
+              <button>
+                <span class="material-symbols-outlined">
+                more_vert
+                </span>  
+              </button>
+              <div class="detail-options">
+                <p data-action="edit">Edit</p>
+                <p data-action="delete">Delete</p>
+              </div>
+            </td>
+          </tr>
+        {% endfor %}
+          
+      </tbody>
+    </table>
+  </div>
+  <div class="order_details">
+    <div class="close" id="close-btn">
+      <span class="material-symbols-outlined">
+      close</span>
+    </div>
+    <div class="edit_order"> 
+      <h2>Edit Order</h2>
+      <form id="editform" method="post" class="" action="orders">
+        <div class="edit-inputs">
+          {% csrf_token %}
+          <input name="id" type="hidden">
+          <div>
+            <h3>Discount</h3>
+            <select name="discount" id="">
+              {% for discount in discounts %}
+                <option value="{{ discount.name }}">{{ discount.name }}</option>  
+              {% endfor %}
+          </select>              
+          </div>
+          <div>
+            <h3>Order Cost</h3>
+            <!-- <input type="" name="total" id="" value="1000"> -->
+            <div name="total"></div>              
+          </div>
+          <div>
+            <h3>Client</h3>
+            <select name="client" id="">
+              {% for customer in customers %}
+                <option value="{{ customer.name }}">{{ customer.name }}</option>
+              {% endfor %}
+            </select>              
+          </div>
+          <div>
+            <h3>Delivery method</h3>
+            <select name="delivery-method" id="">
+              {% for method in delivery_methods %}
+                <option value="{{ method.method }}">{{ method.method }}</option>
+              {% endfor %}
+            </select>              
+          </div>
+          <div>
+            <h3>Status</h3>
+            <select name="status" id="">
+              <option value="complete">Complete</option>
+              <option value="pending">Pending</option>
+            </select>              
+          </div>
+        </div>
+      <input type="submit" name="" id="submit" value="Save Changes">
+      </form>  
+    </div>
+    <div class="delete-order">
+      <h2>Delete Order</h2>
+      <h3></h3>
+      <div>
+        <form method="post" action="orders">
+          {% csrf_token %}
+          <input type="hidden" name="delete" value="delete">
+          <input name="id" type="hidden">
+          <button data-action="yes" type="submit">Yes</button>        
+        </form>
+        <button data-action="no">No</button>
+      </div>
+    </div>
+    {{ orders_js|json_script:"orders_js" }}
+    {{ delivery_methods_js|json_script:"delivery_methods_js" }}
+    {{ discounts_js|json_script:"discounts_js" }}
+    {{ customers_js|json_script:"customers_js" }}
+    {{ total_js|json_script:"total_js" }}
+  </div>
+</main> 
+{% endblock main %}
+  
+
+{% block pagejs %}
+  <script src="{% static 'js/order.js' %}"></script>
+{% endblock pagejs %}
