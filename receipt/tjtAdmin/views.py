@@ -8,6 +8,7 @@ from datetime import datetime
 from .excel import *
 from django.contrib.auth.models import User, Group
 from .decorators import *
+from .models import *
 
 # Create your views here.
 @login_required(login_url= 'signin')
@@ -241,7 +242,12 @@ def setting(request):
 @login_required(login_url='signin')
 @unauthenticated_user
 def expenses(request):
-  return render(request, 'expenses.html')
+  expenses = Expenses.objects.all()
+  context = {
+    'expenses': expenses,
+    'expenses_js': list(expenses.values())
+  }
+  return render(request, 'expenses.html', context)
 
 @login_required(login_url='signin')
 def logout(request):
