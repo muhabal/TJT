@@ -358,17 +358,17 @@ main .insights small{
 
 /*================RECENT ORDERS ====================*/
 
-main .recent-orders, .customers_list, .customer_details, .orders_list ,.order_details, .products_list, .product_details, .admin-settings{
+main .recent-orders, .customers_list, .customer_details, .orders_list ,.order_details, .products_list, .product_details, .admin-settings, .expenses_list, .expenses_details{
   margin-top: 2rem;
 }
 
-main .recent-orders h2, .customers_list h2, .customer_details h2, .orders_list h2, .order_details h2, .product_details h2, .products_list h2
+main .recent-orders h2, .customers_list h2, .customer_details h2, .orders_list h2, .order_details h2, .product_details h2, .products_list h2, .expenses_details h2, .expenses_list h2
 {
   margin-bottom: .8rem;
 }
 
 
-main .recent-orders table, .customers_list table, .orders_list table, .products_list table{
+main .recent-orders table, .customers_list table, .orders_list table, .products_list table, .expenses_list table{
   background: var(--color-white);
   width: 100%;
   border-radius: var(--card-border-radius);
@@ -380,7 +380,8 @@ main .recent-orders table, .customers_list table, .orders_list table, .products_
 
 
 main .recent-orders table:hover, .customers_list  table:hover, .customer_details:hover,.order_details:hover, .orders_list table:hover,
-.products_list table:hover, .product_details:hover{
+.products_list table:hover, .product_details:hover
+,.expenses_list table:hover, .expenses_details:hover{
   box-shadow: none;
 }
 
@@ -591,7 +592,7 @@ main .recent-orders a{
   color: var(--color-danger);
   transform: translateY(5px);
 }
-.customer_details, .order_details, .product_details, .userEVD, .admin-settings, .settings-tab{
+.customer_details, .order_details, .product_details, .userEVD, .admin-settings, .settings-tab, .expenses_details{
   position: relative;
   background: var(--color-white);
   width: 100%;
@@ -601,18 +602,18 @@ main .recent-orders a{
   transition: all .3s ease;
 }
 
-.customer_details, .order_details, .product_details{
+.customer_details, .order_details, .product_details, .expenses_details{
   display: none;
 }
 
-.customer_details .close, .order_details .close, .product_details .close, .userEVD .close{
+.customer_details .close, .order_details .close, .product_details .close, .userEVD .close, .expenses_details .close{
   position: absolute;
   top: 2rem;
   right: 2rem;
   cursor: pointer;
 }
 
-.edit_detail, .delete-detail, .add-new-customer, .edit_order, .delete-order, .edit_product, .delete-product, .add-new-product{
+.edit_detail, .delete-detail, .add-new-customer, .edit_order, .delete-order, .edit_product, .delete-product, .add-new-product, .add-new-expense, .edit_expenditure, .delete-expenditure{
   display: none;
 }
 
@@ -622,18 +623,18 @@ main .recent-orders a{
   gap: 1rem;
 }
 
-.delete-detail h3{
+.delete-detail h3, .delete-expenditure h3{
   color: var(--color-danger);
 }
 
-.delete-detail div, .delete-order div, .delete-product div{
+.delete-detail div, .delete-order div, .delete-product div, .delete-expenditure div{
   display: flex;
   justify-content: left;
   gap: 1rem;
   margin-top: 10px;
 }
 
-.delete-detail button, .delete-order button, .delete-product button{
+.delete-detail button, .delete-order button, .delete-product button, .delete-expenditure button{
   padding: .5rem 2rem;
   background: var(--color-primary);
   color: var(--color-dark);
@@ -641,11 +642,11 @@ main .recent-orders a{
   margin-top: .8rem;
 }
 
-main .add-customer, .add-product-main{
+main .add-customer, .add-product-main, .add-expense-main{
   margin-top: 1rem;
 }
 
-main .add-customer div, .add-product-main div{
+main .add-customer div, .add-product-main div, .add-expense-main div{
   display: flex;
   width: fit-content;
   gap: 5px;
