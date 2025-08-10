@@ -242,6 +242,30 @@ def setting(request):
 @login_required(login_url='signin')
 @unauthenticated_user
 def expenses(request):
+  if request.method == 'POST':
+    if request.POST.get('new', False):
+      name = request.POST['name']
+      cost = request.POST['cost']
+      quantity = request.POST['quantity']
+      unit = request.POST['unit']
+      new_expense = Expenses.objects.create(name = name, cost = cost, unit = unit, quantity = quantity)
+      new_expense.save()
+    else:
+      id = request.POST['id']
+      expenditure = Expenses.objects.get(id = id)
+      if request.POST.get('delete', False):
+        expenditure.delete()
+      else:
+        name = request.POST['name']
+        cost = request.POST['cost']
+        quantity = request.POST['quantity']
+        unit = request.POST['unit']
+        expenditure.name = name
+        expenditure.cost = cost
+        expenditure.quantity = quantity
+        expenditure.unit = unit
+        expenditure.save()
+    return redirect('expenses')
   expenses = Expenses.objects.all()
   context = {
     'expenses': expenses,
