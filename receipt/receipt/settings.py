@@ -41,6 +41,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -82,6 +84,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'receipt.wsgi.application'
+ASGI_APPLICATION = 'receipt.asgi.application'
 
 
 # Database
@@ -163,6 +166,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+CHANNEL_LAYERS = {
+  'default': {
+    'BACKEND': "channels.layers.InMemoryChannelLayer"
+  }
+}
 
 # CSRF_TRUSTED_ORIGINS = ['https://the-juice-trybe-admin.onrender.com']  # Add your production domain here
 
