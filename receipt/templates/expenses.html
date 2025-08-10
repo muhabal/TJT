@@ -2,9 +2,107 @@
 
 {% load static %}
 
-
 {% block main %}
-This is the Expeneses page, let us add some functionality here.
+<main>
+  <h1>Expenses</h1>
+
+  <div class="date">
+    <input type="date">
+  </div>
+
+  <div class="expenses_list">
+    <table>
+      <thead>
+        <tr>
+          <th>Item Bought</th>
+          <th>Quantity</th>
+          <th>Cost</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for expense in expenses %}
+          <tr id="expense-{{ expense.id }}">
+            <td>{{ expense.name }}</td>
+            <td>{{ expense.quantity }} {{ expense.unit }}</td>
+            <td>{{ expense.cost }}</td>
+          
+            {% if request.is_superuser %}
+            <td class="primary detail" data-expense-id="{{ expense.id }}">
+              <span>Details</span>
+              <button>
+                <span class="material-symbols-outlined">
+                more_vert
+                </span>  
+              </button>
+              <div class="detail-options">
+                <p data-action="edit">Edit</p>
+                <p data-action="delete">Delete</p>
+              </div>
+            </td>
+            {% endif %}
+  
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="add-expense-main">
+    <div>
+      <span class="material-symbols-outlined">
+      add
+      </span>
+      Add Expenditure
+    </div>
+  </div>
+  <div class="expenses_details">
+    <div class="close" id="close-btn">
+      <span class="material-symbols-outlined">
+      close</span>
+    </div>
+    <div class="edit_expenditure"> 
+      <h2>Edit Expenditure</h2>
+      <form method="post" action="expenses">
+        {% csrf_token %}
+        <div class="edit-inputs">
+          <input type="hidden" name="id">
+          <input name="name" placeholder="Item Name" type="text">
+          <input name="cost" placeholder="Cost" type="text">     
+          <input name="quantity" placeholder="Quantity" type="text"> 
+          <input name="unit" placeholder="Unit" type="text"> 
+        </div>
+      <input type="submit" name="" id="submit" value="Save">
+      </form>  
+    </div>
+    <div class="delete-expenditure">
+      <h2>Delete Expenditure</h2>
+      <h3></h3>
+      <div>
+        <form action="" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="delete" value="delete">
+          <input type="hidden" name="id">
+          <button data-action="yes">Yes</button>        
+        </form>
+        <button data-action="no">No</button>
+      </div>
+    </div>
+    <div class="add-new-expense" id="newExpenditure">
+      <h2>New Expenditure</h2>
+      <form method="post" class="" action="">
+        {% csrf_token %}
+        <div class="edit-inputs">
+          <input type="hidden" name="new" value="new">
+          <input name="name" placeholder="Item Name" type="text">
+          <input name="cost" placeholder="Cost" type="text">     
+          <input name="quantity" placeholder="Quantity" type="text"> 
+          <input name="unit" placeholder="Unit" type="text"> 
+        </div>
+      <input type="submit" name="" id="submit" value="Add">
+      </form>      
+    </div>
+    {{ expenses_js|json_script:"expenses_js" }}
+  </div>
+</main> 
 {% endblock main %}
 
 
