@@ -255,6 +255,7 @@
       var page;
       try{
         page = pre_page.split('#',1)
+        page = page[0]
       }
       catch(err){
         page = pre_page
@@ -265,6 +266,7 @@
       sideEl.classList.toggle('active')    
     }
   </script>
+  <script src="{% static 'js/updates.js' %}"></script>
 
   <script type="text/javascript">
     let url = `ws://${window.location.host}/ws/socket-server/`

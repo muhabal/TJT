@@ -89,7 +89,7 @@
             </select>              
           </div>
         </div>
-      <input type="submit" name="" id="submit" value="Save Changes">
+      <input data-orders="edit" type="submit" name="" id="submit" value="Save Changes">
       </form>  
     </div>
     <div class="delete-order">
@@ -100,7 +100,7 @@
           {% csrf_token %}
           <input type="hidden" name="delete" value="delete">
           <input name="id" type="hidden">
-          <button data-action="yes" type="submit">Yes</button>        
+          <button data-orders="delete" data-action="yes" type="submit">Yes</button>        
         </form>
         <button data-action="no">No</button>
       </div>
@@ -110,6 +110,7 @@
     {{ discounts_js|json_script:"discounts_js" }}
     {{ customers_js|json_script:"customers_js" }}
     {{ total_js|json_script:"total_js" }}
+    {{ request.user.username|json_script:"user"}}
   </div>
 </main> 
 {% endblock main %}

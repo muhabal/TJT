@@ -66,7 +66,7 @@
           <input name="quantity" placeholder="Quantity" type="text"> 
           <input name="unit" placeholder="Unit" type="text"> 
         </div>
-      <input type="submit" name="" id="submit" value="Save">
+      <input data-expenses="edit" type="submit" name="" id="submit" value="Save">
       </form>  
     </div>
     <div class="delete-expenditure">
@@ -77,7 +77,7 @@
           {% csrf_token %}
           <input type="hidden" name="delete" value="delete">
           <input type="hidden" name="id">
-          <button data-action="yes">Yes</button>        
+          <button data-expenses="delete" data-action="yes">Yes</button>        
         </form>
         <button data-action="no">No</button>
       </div>
@@ -93,11 +93,12 @@
           <input name="quantity" placeholder="Quantity" type="text"> 
           <input name="unit" placeholder="Unit" type="text"> 
         </div>
-      <input type="submit" name="" id="submit" value="Add">
+      <input data-expenses="add" type="submit" name="" id="submit" value="Add">
       </form>      
     </div>
     {{ expenses_js|json_script:"expenses_js" }}
   </div>
+   {{ request.user.username|json_script:"user"}}
 </main> 
 {% endblock main %}
 

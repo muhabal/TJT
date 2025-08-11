@@ -66,7 +66,7 @@
             <div></div>
           </div>
         </div>
-      <input type="submit" name="" id="submit" value="Save">
+      <input data-products="edit" type="submit" name="" id="submit" value="Save">
       </form>  
     </div>
     <div class="delete-product">
@@ -77,7 +77,7 @@
           {% csrf_token %}
           <input type="hidden" name="delete" value="delete">
           <input type="hidden" name="id">
-          <button data-action="yes">Yes</button>        
+          <button data-products="delete" data-action="yes">Yes</button>        
         </form>
 
         <button data-action="no">No</button>
@@ -92,11 +92,12 @@
           <input name="name" placeholder="Product Name" type="text">
           <input name="price" placeholder="Unit Price" type="text">     
         </div>
-      <input type="submit" name="" id="submit" value="Add">
+      <input data-products="add" type="submit" name="" id="submit" value="Add">
       </form>      
     </div>
     {{ products_js|json_script:"products_js" }}
     {{ sales_js|json_script:"sales_js" }}
+    {{ request.user.username|json_script:"user"}}
   </div>
 </main> 
 {% endblock main %}

@@ -66,7 +66,7 @@
             <input name="phone" placeholder="Mobile No" type="number">     
             <input name="id" type="hidden">
           </div>
-        <input type="submit" name="" id="submit" value="Save Changes">
+        <input data-customers="edit" type="submit" name="" id="submit" value="Save Changes">
         </form>  
       </div>
       <div class="delete-detail">
@@ -77,7 +77,7 @@
             {% csrf_token %}
             <input type="hidden" name="delete" value="delete">
             <input name="id" type="hidden">
-            <button data-action="yes" type="submit">Yes</button>
+            <button data-customers="delete" data-action="yes" type="submit">Yes</button>
           </form>
           <button data-action="no">No</button>
         </div>
@@ -92,10 +92,11 @@
             <input name="address" placeholder="Address" type="text">
             <input name="phone" placeholder="Mobile No" type="number">     
           </div>
-          <input type="submit" name="" id="submit" value="Add">
+          <input data-customers="add" type="submit" name="" id="submit" value="Add">
         </form>      
       </div>   
       {{ clients|json_script:"clients" }}
+      {{ request.user.username|json_script:"user"}}
     </div>
   </main> 
 {% endblock main %}
