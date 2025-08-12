@@ -3,38 +3,30 @@ const User = JSON.parse(document.getElementById('user').textContent)
 
 // recent updates div
 const recent_updates_div = document.querySelector(".recent-updates .updates")
-// recent_updates_div.innerHTML = ''
+recent_updates_div.innerHTML = ''
 
 
-// const getTimeDiff = (date)=>{
-//   let time_sent = new Date(date).getTime()
-//   let now = new Date().getTime()
-//   if (time_sent < now){
-//     // in minutes
-//     let diff = (now - time_sent)/60000
-//     if (diff < 60){
-//       return `${Math.abs(Math.round(diff))} minutes ago`
-//     } else if (diff > 60 && diff < (diff/60)/24 ){
-//       diff = diff/60
-//       return `${Math.abs(Math.round(diff))} hours ago`
-//     } else if (diff > (diff/60)/24){
-//       diff = (diff/60)/24
-//       return `${Math.abs(Math.round(diff))} days ago`
-//     }
-//   }else if(time_sent == now){
-//     return `now`
-//   }
-//   else{
-//     let diff = now - time_sent
-//     diff = diff/60000
-//     diff = Math.abs(Math.round(diff))
-//     if (diff > 1){
-//       return `${diff} minutes ago`}
-//     else{
-//       return `1 minute ago`
-//     }
-//   }
-// }
+const getTimeDiff = (date)=>{
+  let time_sent = new Date(date).getTime()
+  let now = new Date().getTime()
+  if (time_sent < now){
+    // in minutes
+    let diff = (now - time_sent)/60000
+    if (diff < 60){
+      if (Math.abs(Math.round(diff)) == '1'){
+        return `1 minute ago`
+      }else{
+        return `${Math.abs(Math.round(diff))} minutes ago`
+      }
+    } else if (diff > 60 && diff < (diff/60)/24 ){
+      diff = diff/60
+      return `${Math.abs(Math.round(diff))} hours ago`
+    } else if (diff > (diff/60)/24){
+      diff = (diff/60)/24
+      return `${Math.abs(Math.round(diff))} days ago`
+    }
+  }
+}
 
 // add event listener to all submit buttons
 try{
@@ -46,6 +38,7 @@ try{
       
       const note = document.createElement('div')
       note.classList.add('update')
+      note.setAttribute('data-time', `${new Date()}`)
       note.innerHTML = `
                 <div class="profile-photo">
                   <img style="border-radius: 50%;" src="static/icons/tjt_logo.png" alt="">
@@ -56,19 +49,19 @@ try{
         notification = `
               <div class="message">
                 <p><b>${User}</b> ${page_name} info was changed</p>
-                <small class="text-muted">10 mins ago</small>
+                <small class="text-muted">now</small>
               </div>`
       }else if (action == 'add'){
         notification = `
               <div class="message">
                 <p><b>${User}</b> new ${page_name} created</p>
-                <small class="text-muted">10 mins ago</small>
+                <small class="text-muted">now</small>
               </div>`
       }else if (action == 'delete'){
         notification = `
               <div class="message">
                 <p><b>${User}</b> ${page_name} was deleted</p>
-                <small class="text-muted">10 mins ago</small>
+                <small class="text-muted">now</small>
               </div>`
       }
       note.innerHTML += notification
@@ -77,3 +70,17 @@ try{
     })
   })
 }catch(err){}
+
+// update all notifications
+const updateNotes = ()=>{
+  const notes = document.querySelectorAll('.update')
+  notes.forEach((notification)=>{
+    const time = notification.dataset.time
+    var relativeTime = getTimeDiff(time)
+    const timeEl = notification.querySelector('small')
+    timeEl.innerHTML = relativeTime
+  }) 
+}
+
+setInterval(updateNotes, 60 *1000)
+
