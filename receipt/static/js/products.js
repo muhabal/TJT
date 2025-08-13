@@ -80,6 +80,33 @@ newProduct.addEventListener( 'click',()=>{
   addNewProduct.style.display ='block'
 })
 
+// check input before submission
+
+const checkProductParams = (name, price, e)=>{
+  if (name == '' || price == ""){
+    tjtAlert("Empty input detected, ensure to fill all inputs", adminContainer)
+    e.preventDefault();
+  }
+}
+
+var submitBtns = product_details.querySelectorAll('input')
+submitBtns.forEach((btn)=>{
+  if (btn.type == "submit"){
+    var action = btn.dataset.type
+    btn.addEventListener('click', (e)=>{
+      if (action == 'edit'){
+        var price = product_edit_block.querySelector('[name = "unit-price"]').value
+        var name = product_edit_block.querySelector('[name = "product"]').value        
+      }else{
+        var name = addNewProduct.querySelector('[name = "name"]').value
+        var price = addNewProduct.querySelector('[name = "price"]').value  
+      }
+      checkProductParams(name, price, e)
+    })
+  }
+})
+
+
 // check if the add product was the link click to come to this page
 
 window.onload = ()=>{

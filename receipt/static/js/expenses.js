@@ -75,4 +75,33 @@ newExpenditure.addEventListener( 'click',()=>{
   expense_details.style.display = 'block'
   addNewExpense.style.display ='block'
 })
+
+const checkExpenseParams = (name, quantity, unit, cost, e)=>{
+  if (name == '' || quantity == "" || unit == "" || cost == ""){
+    tjtAlert("Empty input detected, ensure to fill all inputs", adminContainer)
+    e.preventDefault();
+  }
+}
+
+var submitBtns = expense_details.querySelectorAll('input')
+submitBtns.forEach((btn)=>{
+  if (btn.type == "submit"){
+    var action = btn.dataset.type
+    btn.addEventListener('click', (e)=>{
+      if (action == 'edit'){
+        var name = expense_edit_block.querySelector('[name="name"]').value
+        var quantity = expense_edit_block.querySelector('[name="quantity"]').value
+        var unit = expense_edit_block.querySelector('[name="unit"]').value
+        var cost = expense_edit_block.querySelector('[name="cost"]').value
+      }else{
+        var name = addNewExpense.querySelector('[name="name"]').value
+        var quantity = addNewExpense.querySelector('[name="quantity"]').value
+        var unit = addNewExpense.querySelector('[name="unit"]').value
+        var cost = addNewExpense.querySelector('[name="cost"]').value
+      }
+      checkExpenseParams(name, quantity, unit, cost, e)
+    })
+  }
+})
+
       
