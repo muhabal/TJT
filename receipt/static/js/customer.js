@@ -46,6 +46,7 @@ detail_option.forEach((option)=>{
     }else{
       // set edit block to display none and show delete block
       edit_block.style.display = 'none'     
+      addNewCustomer.style.display = 'none'    
       delete_block.style.display = 'block'
       delete_block.querySelector('[name = "id"]').value = parent.customerId
       
@@ -67,6 +68,12 @@ detail_option.forEach((option)=>{
   })  
 })
 
+// add event listener to close the customer details block
+var customerCloseBtn = customer_details.querySelector('.close')
+customerCloseBtn.addEventListener('click', ()=>{
+  customer_details.style.display = 'none'
+}) 
+
 // event listener for displaying form to add new customer
 const newCustomer = document.querySelector('.add-customer')
 newCustomer.addEventListener( 'click',()=>{
@@ -76,24 +83,31 @@ newCustomer.addEventListener( 'click',()=>{
   addNewCustomer.style.display ='block'
 })
 
-// event listener to remove details options from display on window click
-// window.addEventListener('click', ()=>{
-//   activeDetail();
-// })
-
-// function to remove the details option
-// function activeDetail(){
-//   details.forEach((selected)=>{
-//     var option = selected.querySelector('.detail-options')
-//     if (option.classList.contains('active')){
-//       option.classList.toggle('active'); 
-//     }
-//   })  
-// }
-
 // function to close customer details 
 function closeCustomerDetails(){
   customer_details.style.display = 'none'
 }
 
-// add an event listener 'change' to the client details input
+const checkCustomerParams = (name, phone, e)=>{
+  if (name == '' || phone == ""){
+    tjtAlert("Empty input detected, ensure to provide name and phone", adminContainer)
+    e.preventDefault();
+  }
+}
+
+var submitBtns = customer_details.querySelectorAll('input')
+submitBtns.forEach((btn)=>{
+  if (btn.type == "submit"){
+    var action = btn.dataset.type
+    btn.addEventListener('click', (e)=>{
+      if (action == 'edit'){
+        var name = edit_block.querySelector('[name = "name"]').value
+        var phone = edit_block.querySelector('[name = "phone"]').value        
+      }else{
+        var name = addNewCustomer.querySelector('[name = "name"]').value
+        var phone = addNewCustomer.querySelector('[name = "phone"]').value  
+      }
+      checkCustomerParams(name, phone, e)
+    })
+  }
+})

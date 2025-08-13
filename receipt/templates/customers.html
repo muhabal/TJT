@@ -66,7 +66,7 @@
             <input name="phone" placeholder="Mobile No" type="number">     
             <input name="id" type="hidden">
           </div>
-        <input type="submit" name="" id="submit" value="Save Changes">
+        <input data-type="edit" type="submit" name="" id="submit" value="Save Changes">
         </form>  
       </div>
       <div class="delete-detail">
@@ -92,7 +92,7 @@
             <input name="address" placeholder="Address" type="text">
             <input name="phone" placeholder="Mobile No" type="number">     
           </div>
-          <input type="submit" name="" id="submit" value="Add">
+          <input data-type="new" type="submit" name="" id="submit" value="Add">
         </form>      
       </div>   
       {{ clients|json_script:"clients" }}
