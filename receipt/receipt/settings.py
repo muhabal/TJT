@@ -166,11 +166,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# CHANNEL_LAYERS = {
-#   'default': {
-#     'BACKEND': "channels.layers.InMemoryChannelLayer"
-#   }
-# }
+CHANNEL_LAYERS = {
+  'default': {
+    'BACKEND': "channels.layers.InMemoryChannelLayer"
+  }
+}
 
 # CSRF_TRUSTED_ORIGINS = ['https://the-juice-trybe-admin.onrender.com']  # Add your production domain here
 

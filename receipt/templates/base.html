@@ -274,7 +274,15 @@
     const chatSocket = new WebSocket(url)
     chatSocket.onmessage = function(e){
       let data = JSON.parse(e.data)
-      console.log('Data:', data)
+      let user = data.User
+      let action = data.action
+      let time = data.time
+      let senderPage = data.page
+      try{
+        newNotification(user, senderPage, time, action)
+      }
+      catch(err){}
+      console.log('Data:', user, action, time, senderPage)
     }
   </script>
 </body>
