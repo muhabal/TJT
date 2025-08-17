@@ -5,8 +5,12 @@ import json
 import uuid
 from django.contrib import auth, messages
 import datetime
+from tjtAdmin.utils import jsTime, customNotificationSend
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group, User
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+from tjtAdmin.models import Notifications
 
 # Create your views here.
 
@@ -65,7 +69,15 @@ def logOrder(request):
       total = item['total']
     
       product = Product.objects.get(name = product_name)
-      order_item = OrderItem.objects.create(order=order,  product = product, quantity = quantity)   
+      order_item = OrderItem.objects.create(order=order,  product = product, quantity = quantity)  
+
+    # sending notification
+    message = "created an order"
+    customNotificationSend(request.user.username,message)
+    time = jsTime()
+
+    Notifications.objects.create(user = request.user.username, time=time, action = f"{message}").save()
+
     return HttpResponse('all good')
   
 def receipt(request, pk):
@@ -94,8 +106,13 @@ def signin(request):
 
       if user is not None:
         auth.login(request, user)
-
         if request.user.groups.filter(name='Admin').exists() != False:
+          # send notification of user sign in
+          customNotificationSend(user, "signed in")
+          # save notification
+          time = jsTime()
+          Notifications.objects.create(user = user.username, action = "signed in", time = time).save()
+
           return redirect('/')
         else:
           return redirect('/invoice')

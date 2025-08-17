@@ -14,13 +14,16 @@ from .utils import *
 @login_required(login_url= 'signin')
 @unauthenticated_user
 def index(request):
-  print(request.method)
-  return render(request, 'index.html')
+  notifications = getNotifications()
+  context = {
+    'notifications': notifications,
+  }
+  return render(request, 'index.html', context)
 
 @login_required(login_url='signin')
 @unauthenticated_user
 def products(request):
-  print(request.method)
+  notifications = getNotifications()
   if request.method == 'POST':
     if request.POST.get('new', False):
       name = request.POST['name']
@@ -46,6 +49,7 @@ def products(request):
     sales.append(product.get_total_sales)
   context = {
     'products':products,
+    'notifications': notifications,
     'products_js': list(products.values()),
     'sales_js': sales,
   }
@@ -54,7 +58,7 @@ def products(request):
 @login_required(login_url='signin')
 @unauthenticated_user
 def customers(request):
-  print(request.method)
+  notifications = getNotifications()
   if request.method == 'POST':
     if request.POST.get('new', False):
       name = request.POST['name']
@@ -80,7 +84,8 @@ def customers(request):
   customers = DeliveryAddress.objects.all()
   context = {
     'customers': customers,
-    'clients': list(customers.values())
+    'clients': list(customers.values()),
+    'notifications': notifications,
   }
   return render(request, 'customers.html', context)
 
@@ -88,7 +93,7 @@ def customers(request):
 @unauthenticated_user
 def records(request):
   orders = Order.objects.all()
-
+  
   # get information to be inserted in the excel sheet
   if request.method == 'POST':
     start_date = request.POST['start']
@@ -143,6 +148,7 @@ def records(request):
 @login_required(login_url='signin')
 @unauthenticated_user
 def orders(request):
+  notifications = getNotifications()
   if request.method == 'POST':
     if request.POST.get('delete', False):
       id = request.POST['id']
@@ -181,12 +187,14 @@ def orders(request):
       'customers_js':list(customers.values()),
       'orders_js': list(orders.values()),
       'total_js':total_list,
+      'notifications': notifications,
     }
     return render(request, 'orders.html', context)
   
 @login_required(login_url='signin')
 @unauthenticated_user
 def setting(request):
+  notifications = getNotifications()
   # create new user
   if request.method == 'POST':
     try:
@@ -236,12 +244,14 @@ def setting(request):
     'users_js': list(users.values()),
     'user_groups': (user_groups),
     'groups_js': list(groups.values()),
+    'notifications': notifications,
   }
   return render(request, 'settings.html', context)
 
 @login_required(login_url='signin')
 @unauthenticated_user
 def expenses(request):
+  notifications = getNotifications()
   if request.method == 'POST':
     if request.POST.get('new', False):
       name = request.POST['name']
@@ -269,7 +279,8 @@ def expenses(request):
   expenses = Expenses.objects.all()
   context = {
     'expenses': expenses,
-    'expenses_js': list(expenses.values())
+    'expenses_js': list(expenses.values()),
+    'notifications': notifications,
   }
   return render(request, 'expenses.html', context)
 

@@ -20,7 +20,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     time= text_data_json['time']
 
     # save to database
-    await self.save_notification(username, time, page)
+    await self.save_notification(username, time, page, action)
 
     # send message to admin
     
@@ -47,6 +47,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
         'page': page    
     }))
 
+  async def custom_note(self,event):
+    print("connected")
+    await self.send(text_data = json.dumps({
+      "user": event['user'],
+      "message": event['message']
+    }))
+
   @sync_to_async
-  def save_notification(self, user, time, page):
-    Notifications.objects.create(user=user, time = time, page = page).save()
+  def save_notification(self, user, time, page, action):
+    Notifications.objects.create(user=user, time = time, page = page, action = action).save()

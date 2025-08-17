@@ -194,7 +194,8 @@
         </table>
         <a href="#">Show All</a>
       </div>
-    </main>       
+    </main>    
+    {{ request.user.username|json_script:"user"}}   
     {% endblock main %}
       
 

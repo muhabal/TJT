@@ -14,7 +14,8 @@ class Expenses(models.Model):
 class Notifications(models.Model):
   user = models.CharField(max_length=20)
   time = models.CharField(max_length=100)
-  page = models.CharField(max_length=20)
+  page = models.CharField(max_length=20, blank=True, null=True)
+  action = models.CharField(max_length=20, default='')
 
   def __str__(self):
     return self.time

@@ -5,25 +5,41 @@ const User = JSON.parse(document.getElementById('user').textContent)
 const recent_updates_div = document.querySelector(".recent-updates .updates")
 // recent_updates_div.innerHTML = ''
 
-
+// get the relative time for all updates
 const getTimeDiff = (date)=>{
   let time_sent = new Date(date).getTime()
   let now = new Date().getTime()
   if (time_sent < now){
     // in minutes
     let diff = (now - time_sent)/60000
+    diff = Math.abs(Math.round(diff))
+    // in hours
+    let hrDiff = diff/60
+    hrDiff = Math.abs(Math.round(hrDiff))
+    // in days
+    let dayDiff = hrDiff/24
+    dayDiff = Math.abs(Math.round(dayDiff))
+
     if (diff < 60){
-      if (Math.abs(Math.round(diff)) == '1'){
+      if (diff == '1'){
         return `1 minute ago`
-      }else{
-        return `${Math.abs(Math.round(diff))} minutes ago`
+      } else if (diff == '0'){
+        return 'now'
+      } else{
+        return `${diff} minutes ago`
       }
-    } else if (diff > 60 && diff < (diff/60)/24 ){
-      diff = diff/60
-      return `${Math.abs(Math.round(diff))} hours ago`
-    } else if (diff > (diff/60)/24){
-      diff = (diff/60)/24
-      return `${Math.abs(Math.round(diff))} days ago`
+    } else if (diff >= 60 && dayDiff == 0){
+        if(hrDiff == '1'){
+          return `1 hour ago`
+        }else{
+          return `${hrDiff} hours ago`
+        }
+    } else if (dayDiff>0){
+        if (dayDiff == '1'){
+          return `1 day ago`
+        }else{
+          return `${dayDiff} days ago`
+        }
     }
   }
 }
@@ -34,7 +50,6 @@ try{
   buttons.forEach((button)=>{
     var action = button.dataset[page]
     button.addEventListener('click', (e)=>{
-      e.preventDefault()
       chatSocket.send(JSON.stringify({
         'User': User,
         'page': page,
@@ -47,26 +62,22 @@ try{
 }catch(err){}
 
 // update all notifications
-// const updateNotes = ()=>{
-//   const notes = document.querySelectorAll('.update')
-//   notes.forEach((notification)=>{
-//     const time = notification.dataset.time
-//     var relativeTime = getTimeDiff(time)
-//     const timeEl = notification.querySelector('small')
-//     timeEl.innerHTML = relativeTime
-//   }) 
-// }
+const updateNotes = ()=>{
+  const notes = document.querySelectorAll('.update')
+  notes.forEach((notification)=>{
+    const time = notification.dataset.time
+    var relativeTime = getTimeDiff(time)
+    const timeEl = notification.querySelector('small')
+    timeEl.innerHTML = relativeTime
+  }) 
+}
 
-// setInterval(updateNotes, 60 *1000)
+// change relative time of the updates every minute
+setInterval(updateNotes, 60 *1000)
 
+// function to add notification to recent updates
 function newNotification(user, page, time, action){
-  const note = document.createElement('div')
-        note.classList.add('update')
-        note.setAttribute('data-time', `${new Date()}`)
-        note.innerHTML = `
-                  <div class="profile-photo">
-                    <img style="border-radius: 50%;" src="static/icons/tjt_logo.png" alt="">
-                  </div>`
+        var note = Note();
         var notification;
         var page_name = page.slice(0, -1)
         if (action == 'edit'){
@@ -90,4 +101,44 @@ function newNotification(user, page, time, action){
         }
         note.innerHTML += notification
         recent_updates_div.insertBefore(note,recent_updates_div.firstChild);
+}
+
+// function to send notification for user login and order creation
+const customNotification = (user, message)=>{
+  var note = Note();
+  if (message != "created an order")
+    {
+      note.innerHTML += `
+            <div class="message">
+              <p><b>${user}</b> ${user} logged in</p>
+              <small class="text-muted">now</small>
+            </div>
+    `
+  }
+  else{
+    note.innerHTML += `
+                <div class="message">
+                  <p><b>${user}</b> ${message}</p>
+                  <small class="text-muted">now</small>
+                </div>
+        `
+  }
+  recent_updates_div.insertBefore(note,recent_updates_div.firstChild);
+}
+
+// add relative time to notifications on page load
+window.onload = ()=>{
+  updateNotes()
+}
+
+// function to create update div
+const Note = ()=>{
+  const note = document.createElement('div')
+        note.classList.add('update')
+        note.setAttribute('data-time', `${new Date()}`)
+        note.innerHTML = `
+                  <div class="profile-photo">
+                    <img style="border-radius: 50%;" src="static/icons/profile-3.jpg" alt="">
+                  </div>`
+  return note
 }

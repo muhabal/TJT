@@ -149,33 +149,33 @@
       <div class="recent-updates">
         <h2>Recent Updates</h2>
         <div class="updates">
-          <div class="update">
+          
+          {% for notification in notifications %}
+          <div class="update" data-time="{{ notification.time }}">
             <div class="profile-photo">
               <img style="border-radius: 50%;" src="{% static 'icons/profile-2.jpg' %}" alt="">
             </div>
             <div class="message">
-              <p><b>Mike Tyson </b>received his order of Night lion tech GPS drone.</p>
-              <small class="text-muted">2 minutes ago</small>
+              <p><b>{{ notification.user }}</b>
+                
+                {% if notification.action == 'edit' %}
+                  {{ notification.page}} info was changed
+                {% elif notification.action == 'delete' %}
+                  {{ notification.page }} was deleted
+                {% elif notification.action == "signed in" %}
+                  {{ notification.user }} logged in
+                {% elif notification.action == 'created an order' %}
+                  {{ notification.action }}
+                {% else %}
+                  new {{ notification.page }} was created
+                {% endif %}
+                
+              </p>
+              <small class="text-muted"></small>
             </div>
-          </div>
-          <div class="update">
-            <div class="profile-photo">
-              <img style="border-radius: 50%;" src="{% static 'icons/profile-3.jpg' %}" alt="">
-            </div>
-            <div class="message">
-              <p><b>Mike Tyson </b>received his order of Night lion tech GPS drone.</p>
-              <small class="text-muted">2 minutes ago</small>
-            </div>
-          </div>
-          <div class="update">
-            <div class="profile-photo">
-              <img style="border-radius: 50%;" src="{% static 'icons/profile-4.jpg' %}" alt="">
-            </div>
-            <div class="message">
-              <p><b>Mike Tyson </b>received his order of Night lion tech GPS drone.</p>
-              <small class="text-muted">2 minutes ago</small>
-            </div>
-          </div>
+          </div>            
+          {% endfor %}
+
         </div>
       </div>
       <!-------------------END OF RECENT UPDATES-->
@@ -274,15 +274,22 @@
     const chatSocket = new WebSocket(url)
     chatSocket.onmessage = function(e){
       let data = JSON.parse(e.data)
-      let user = data.User
-      let action = data.action
-      let time = data.time
-      let senderPage = data.page
-      try{
-        newNotification(user, senderPage, time, action)
-      }
-      catch(err){}
-      console.log('Data:', user, action, time, senderPage)
+      
+      if (data.message){
+        let user = data.user
+        let message = data.message
+        customNotification(user, message);
+      }else{
+        let user = data.User
+        let action = data.action
+        let time = data.time
+        let senderPage = data.page
+        try{
+          newNotification(user, senderPage, time, action)
+        }
+        catch(err){}
+        console.log('Data:', user, action, time, senderPage)       
+        }
     }
   </script>
 </body>
