@@ -15,3 +15,7 @@ def invoice_no(value):
     return(value[0:13])
   except (ValueError, TypeError):
     return ''
+
+@register.filter
+def page(value):
+  return value[:-1]

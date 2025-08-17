@@ -1,5 +1,5 @@
 {% load static %}
-
+{% load receipt_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,13 +59,13 @@
           </span>
           <h3>Analytics</h3>
         </a>
-        <!-- <a href="#">
+        <a href="#">
           <span class="material-symbols-outlined">
           mail
           </span>
           <h3>Messages</h3>
           <span class="message-count">26</span>
-        </a> -->
+        </a>
         <a class="products" href="/products">
           <span class="material-symbols-outlined">
             inventory
@@ -159,15 +159,15 @@
               <p><b>{{ notification.user }}</b>
                 
                 {% if notification.action == 'edit' %}
-                  {{ notification.page}} info was changed
+                  {{ notification.page|page }} info was changed
                 {% elif notification.action == 'delete' %}
-                  {{ notification.page }} was deleted
+                  {{ notification.page|page }} was deleted
                 {% elif notification.action == "signed in" %}
                   {{ notification.user }} logged in
                 {% elif notification.action == 'created an order' %}
                   {{ notification.action }}
                 {% else %}
-                  new {{ notification.page }} was created
+                  new {{ notification.page|page }} was created
                 {% endif %}
                 
               </p>
@@ -290,6 +290,7 @@
         catch(err){}
         console.log('Data:', user, action, time, senderPage)       
         }
+      updateList();
     }
   </script>
 </body>

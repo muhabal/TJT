@@ -128,7 +128,8 @@ const customNotification = (user, message)=>{
 
 // add relative time to notifications on page load
 window.onload = ()=>{
-  updateNotes()
+  updateList();
+  updateNotes();
 }
 
 // function to create update div
@@ -141,4 +142,31 @@ const Note = ()=>{
                     <img style="border-radius: 50%;" src="static/icons/profile-3.jpg" alt="">
                   </div>`
   return note
+}
+
+// keep updates at 5 on the recent updates only
+
+const updateList = ()=>{
+  // get all the notifications
+  const allUpdates = recent_updates_div.querySelectorAll('.update')
+  // first get number of child elements in recent updates
+  const noOfchildElements = recent_updates_div.childElementCount
+  var listedUpdates = []
+
+  // add all updates to the list 
+  allUpdates.forEach((update)=>{
+    listedUpdates.push(update.outerHTML)
+  })
+
+  let initial_no;
+
+  recent_updates_div.innerHTML = '';
+  if (noOfchildElements>= 5){
+    initial_no = 5
+  }else{
+    initial_no = noOfchildElements
+  }
+  for (var i = 0; i<initial_no; i++){
+    recent_updates_div.innerHTML += listedUpdates[i]
+  }
 }
