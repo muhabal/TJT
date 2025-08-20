@@ -293,5 +293,87 @@
       updateList();
     }
   </script>
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+    import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-messaging.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyCK56N-8mhtgCi2beviSnPOYZAXX4_T-8o",
+    authDomain: "juicetrybe.firebaseapp.com",
+    projectId: "juicetrybe",
+    storageBucket: "juicetrybe.firebasestorage.app",
+    messagingSenderId: "766038357267",
+    appId: "1:766038357267:web:446dca1fb018cfe894d6e6",
+    measurementId: "G-DS9E2YR62Q"
+  };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const messaging = getMessaging(app)
+    const vapidKey = 'BG60PKgZQb1fiHEk0GnaWn3Rh7FV_0AEY_z2gFZU49iGOe7lvNLNeXgx9VPiTxBPrc_mXhhD5IyXltk32GnMc_Q'
+    const btn = document.getElementById('enable-notifications');
+
+    // get CSRF token from cookie
+    const getCSRF = () =>{
+      const match = document.cookie.match(/csrftoken=([^;]+)/);
+      return match ? match[1] : null;
+    };
+
+    const saveToken = (token) => {
+      fetch('save-fcm-token/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCSRF(),
+        },
+        credentials:"include",
+        body: JSON.stringify({token})
+      })
+      .then(res => res.json())
+      .then(data => console.log('Token saved:', data))
+      .catch(err => console.error('Save failed:', err));
+    };
+
+    const requestAndSendToken = (registration) => {
+      getToken(messaging, { vapidKey, serviceWorkerRegistration: registration})
+      .then((token)=>{
+        if(token){
+          console.log('FCM Token:', token);
+          saveToken(token)
+        } else{
+          console.log(warn("No token available."))
+        }
+      })
+      .catch(err => console.error("Token error:", err))
+    };
+
+    if ('serviceWorker' in navigator){
+      navigator.serviceWorker.register('/firebase-messaging-sw.js')
+          .then((reg) => {
+            console.log('Service Worker registered');
+
+            if (Notification.permission ==="granted"){
+              requestAndSendToken(reg);
+            } else if (Notification.permission !=='denied'){
+              btn.style.display = 'inline-block';
+              btn.addEventListener('click', () => {
+                Notification.requestPermission().then(permission => {
+                  if (permission ==="granted") requestAndSendToken(reg);
+                  else console.warn("Permission denied by user")
+                })
+              })
+            } else {
+                console.warn("Notifications denied earlier");
+            }
+          })
+          .catch(err => console.error("SW registration failed:", err));
+    }
+    
+  </script>
 </body>
 </html>

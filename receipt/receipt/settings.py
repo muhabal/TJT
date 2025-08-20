@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'invoice',
     'tjtAdmin',
+    'rest_framework'
     # 'django_browser_reload'
 ]
 
@@ -110,6 +111,13 @@ DATABASES = {
     }
 }
 
+# firebase config
+import firebase_admin
+from firebase_admin import credentials
+
+cred_path = os.path.join(BASE_DIR, 'juicetrybe-firebase-adminsdk.json')
+cred = credentials.Certificate(cred_path)
+firebase_admin.initialize_app(cred)
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators

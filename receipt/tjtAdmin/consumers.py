@@ -2,6 +2,7 @@ import json
 from channels.generic.websocket import  AsyncWebsocketConsumer,WebsocketConsumer
 from asgiref.sync import sync_to_async
 from .models import Notifications
+from .utils import send_notification
 
 class ChatConsumer(AsyncWebsocketConsumer):
   async def connect(self):
@@ -57,3 +58,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
   @sync_to_async
   def save_notification(self, user, time, page, action):
     Notifications.objects.create(user=user, time = time, page = page, action = action).save()
+  
+  # send push notifications
+  

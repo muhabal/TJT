@@ -4,3 +4,4 @@ from .models import *
 
 admin.site.register(Expenses)
 admin.site.register(Notifications)
+admin.site.register(FCMDevice)

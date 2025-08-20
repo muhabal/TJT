@@ -3,6 +3,10 @@ from .models import Notifications
 from datetime import datetime, timezone
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
+from firebase_admin import messaging
+from rest_framework.views import APIView
+from rest_framework import permissions
+from rest_framework.response import Response
 
 def convertDate(date_string):
   format_code = "%Y-%m-%d"
@@ -42,3 +46,18 @@ def customNotificationSend(user, message):
       "message": f"{message}"
     }
   )
+
+def send_notification(token, title, body, image_url = None):
+  data = {
+    "title":title,
+    "body":body,
+    "icon": "https://hatrabbits.com/wp-content/uploads/2017/01/random.jpg"
+  }
+
+  if image_url:
+    data["image"] = image_url
+
+  message = messaging.Message(data=data, token=token)
+  response = messaging.send(message)
+  print("Data message sent", response)
+

@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 # Create your models here.
 class Expenses(models.Model):
   name = models.CharField(max_length=100, blank=True, null=True)
@@ -19,3 +19,10 @@ class Notifications(models.Model):
 
   def __str__(self):
     return self.time
+  
+class FCMDevice(models.Model):
+  user = models.ForeignKey(User, on_delete=models.CASCADE)
+  token = models.CharField(max_length=25)
+
+  def __str__(self):
+    return self.token
