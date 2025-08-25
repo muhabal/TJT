@@ -18,10 +18,12 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from tjtAdmin import views
 
 urlpatterns = [
     # path("__reload__/", include("django_browser_reload.urls")),
     path('admin/', admin.site.urls),
     path('', include('tjtAdmin.urls')),
     path('invoice/', include('invoice.urls')),
+    path('firebase-messaging-sw.js', views.worker, name='worker'),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

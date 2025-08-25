@@ -5,12 +5,13 @@ import json
 import uuid
 from django.contrib import auth, messages
 import datetime
-from tjtAdmin.utils import jsTime, customNotificationSend
+from tjtAdmin.utils import jsTime, customNotificationSend, send_notification
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group, User
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from tjtAdmin.models import Notifications
+
 
 # Create your views here.
 
@@ -75,6 +76,7 @@ def logOrder(request):
     message = "created an order"
     customNotificationSend(request.user.username,message)
     time = jsTime()
+    send_notification(user=request.user,page = '', action=f"{message}")
 
     Notifications.objects.create(user = request.user.username, time=time, action = f"{message}").save()
 
@@ -112,6 +114,7 @@ def signin(request):
           # save notification
           time = jsTime()
           Notifications.objects.create(user = user.username, action = "signed in", time = time).save()
+          send_notification(user=user.username,page = '', action="signed in")
 
           return redirect('/')
         else:

@@ -292,10 +292,8 @@ def logout(request):
 @login_required(login_url='signin')
 @unauthenticated_user
 def worker(request):
-  sw_path = os.path.join(settings.BASE_DIR, "static")
   try:
-    sw_path = [os.path.join(sw_path, i) for i in os.listdir(sw_path)][0]
-    sw_path = os.path.abspath(file)
+    sw_path = os.path.join(settings.BASE_DIR, "static/js/firebase-messaging-sw.js")
     with open(sw_path, "r") as f:
       js_content = f.read()
     response  = HttpResponse(js_content, content_type ="application/javascript")
@@ -304,9 +302,9 @@ def worker(request):
   except FileNotFoundError:
     return HttpResponse("Service worker not found", status = 404)  
 
-@login_required
-@unauthenticated_user
-class FCMDevice(APIView):
+# @login_required
+# @unauthenticated_user
+class SaveFCMToken(APIView):
   permission_classes = [permissions.IsAuthenticated]
 
   def post(self, request):
@@ -317,8 +315,5 @@ class FCMDevice(APIView):
 
     else:
       FCMDevice.objects.filter(token = token).update_or_create(user=request.user, defaults = {"token":token})
-      # FCMDevice.objects.update_or_create(
-      #   user = request.user,
-      #   defaults = {"token":token}
-      # )
       return Response({"message": "Token saved."}, status=200)      
+    

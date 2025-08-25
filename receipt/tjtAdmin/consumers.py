@@ -22,7 +22,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     # save to database
     await self.save_notification(username, time, page, action)
-
+    
     # send message to admin
     
     await self.channel_layer.group_send(
@@ -47,6 +47,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         'time': time,
         'page': page    
     }))
+    await self.send_with_firebase(User,page, action) 
 
   async def custom_note(self,event):
     print("connected")
@@ -54,10 +55,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
       "user": event['user'],
       "message": event['message']
     }))
-
+  
   @sync_to_async
   def save_notification(self, user, time, page, action):
     Notifications.objects.create(user=user, time = time, page = page, action = action).save()
-  
-  # send push notifications
-  
+
+  @sync_to_async
+  def send_with_firebase(self, User,page,action):
+    send_notification(User,page, action) 

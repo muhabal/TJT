@@ -240,6 +240,7 @@
       
 
   </div>
+  <button id="enable-notifications">Enable notifications</button>
   <script src="{% static 'js/theme.js' %}"></script>
   <script src="{% static 'js/alert.js' %}"></script>
   {% block pagejs %}
@@ -302,20 +303,20 @@
 
     // Your web app's Firebase configuration
     // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyCK56N-8mhtgCi2beviSnPOYZAXX4_T-8o",
-    authDomain: "juicetrybe.firebaseapp.com",
-    projectId: "juicetrybe",
-    storageBucket: "juicetrybe.firebasestorage.app",
-    messagingSenderId: "766038357267",
-    appId: "1:766038357267:web:446dca1fb018cfe894d6e6",
-    measurementId: "G-DS9E2YR62Q"
-  };
+    const firebaseConfig = {
+      apiKey: "AIzaSyCledwB6g4_Ajzw7EB8KaRkv0chTmGXC0o",
+      authDomain: "test-project-9ab85.firebaseapp.com",
+      projectId: "test-project-9ab85",
+      storageBucket: "test-project-9ab85.firebasestorage.app",
+      messagingSenderId: "15860895995",
+      appId: "1:15860895995:web:337702593deeca8142e05e",
+      measurementId: "G-QK9R628H4F"
+    };
 
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const messaging = getMessaging(app)
-    const vapidKey = 'BG60PKgZQb1fiHEk0GnaWn3Rh7FV_0AEY_z2gFZU49iGOe7lvNLNeXgx9VPiTxBPrc_mXhhD5IyXltk32GnMc_Q'
+    const vapidKey = 'BCnJGeBw-KxzvAhUmC-NzISCCvi2-j36P-PzcvtirO8eX3PoadRoDzlQt1WAGW6-A93jDPmEZm_cIntrQV-HDXQ'
     const btn = document.getElementById('enable-notifications');
 
     // get CSRF token from cookie

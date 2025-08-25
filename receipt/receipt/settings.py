@@ -115,7 +115,7 @@ DATABASES = {
 import firebase_admin
 from firebase_admin import credentials
 
-cred_path = os.path.join(BASE_DIR, 'juicetrybe-firebase-adminsdk.json')
+cred_path = os.path.join(BASE_DIR, 'firebase-creds.json')
 cred = credentials.Certificate(cred_path)
 firebase_admin.initialize_app(cred)
 

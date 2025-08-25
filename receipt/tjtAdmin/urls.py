@@ -9,5 +9,6 @@ urlpatterns = [
     path('settings', views.setting, name='settings'),
     path('orders', views.orders, name='orders'),
     path('expenses', views.expenses, name='expenses'),
-    path('logout', views.logout, name='logout')
+    path('logout', views.logout, name='logout'),
+    path('save-fcm-token/', views.SaveFCMToken.as_view(), name="save-fcm-token"),
 ]

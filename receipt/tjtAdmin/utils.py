@@ -1,5 +1,5 @@
 from datetime import datetime
-from .models import Notifications
+from .models import Notifications, FCMDevice
 from datetime import datetime, timezone
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
@@ -47,7 +47,19 @@ def customNotificationSend(user, message):
     }
   )
 
-def send_notification(token, title, body, image_url = None):
+def send_notification(user, page, action):
+  title,image_url = "The Juice Trybe", None
+  if page != '':
+    if action == 'edit':
+      message = f"{page[:-1]} info was changed"
+    elif action == 'delete':
+      message = f"{page[:-1]} info was deleted"
+    else:
+      message = f"a new {page[:-1]} was created"
+    body = f"{message} by {user}"
+  else:
+    body = f"{user} {action}" 
+
   data = {
     "title":title,
     "body":body,
@@ -56,8 +68,9 @@ def send_notification(token, title, body, image_url = None):
 
   if image_url:
     data["image"] = image_url
-
-  message = messaging.Message(data=data, token=token)
-  response = messaging.send(message)
-  print("Data message sent", response)
+  for token in FCMDevice.objects.all():
+    message = messaging.Message(data=data, token=token.token)
+    response = messaging.send(message)
+    print(token.token)
+    print("Data message sent", response)
 
